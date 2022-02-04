@@ -1,0 +1,118 @@
+
+-- DATETIME, TIMESTAMP, DATE e TIME
+
+-- Veja a diferença dos resultados ao testar as funções de Data e Hora. Use o código:
+
+SELECT CURRENT_DATETIME,
+CURRENT_TIMESTAMP,
+CURRENT_DATE,
+CURRENT_TIME;
+
+-- Podem ser incluídas informações geográficas como no exemplo:
+
+SELECT CURRENT_DATETIME('America/Sao_Paulo'),
+CURRENT_DATETIME('Europe/London'),
+CURRENT_TIMESTAMP,
+CURRENT_DATE,
+CURRENT_TIME;
+
+-- Para definir Datae Hora use como exemplo:
+
+SELECT TIMESTAMP('2020-07-01 10:00:00'),
+DATETIME (2020, 7, 1, 10, 0 , 0),
+DATE(2020, 7, 1),
+TIME(10,0,0);
+
+-- TIMESTAMP pode ser usado como parâmetro em funções de Data e Hora.
+
+SELECT DATE(TIMESTAMP('2020-07-01 10:00:00')),
+DATETIME(TIMESTAMP('2020-07-01 10:00:00')),
+TIME(TIMESTAMP('2020-07-01 10:00:00'));
+
+-----------------------------------------------------------------------------
+
+-- ADD, SUB e DIFF operações com tempo
+
+SELECT 
+  DATE_ADD (DATE(2008, 12, 25), INTERVAL 5 DAY) AS CINCO_DIAS_DEPOIS,
+  DATE_ADD (DATE(2008, 12, 25), INTERVAL 4 YEAR) AS QUATRO_ANOS_DEPOIS,
+  TIMESTAMP_ADD (CURRENT_TIMESTAMP, INTERVAL 45 MINUTE) AS QUARENTA_CINCO_MINUTOS_DEPOIS;
+
+SELECT 
+  DATE_SUB (DATE(2008, 12, 25), INTERVAL 5 DAY) AS CINCO_DIAS_ANTES,
+  DATE_SUB (DATE(2008, 12, 25), INTERVAL 4 YEAR) AS QUATRO_ANOS_ANTES,
+  TIMESTAMP_SUB (CURRENT_TIMESTAMP, INTERVAL 45 MINUTE) AS QUARENTA_CINCO_MINUTOS_ANTES;
+
+SELECT 
+  DATE_DIFF (DATE(2010,12,25), DATE(2008, 9, 15), DAY),
+  DATETIME_DIFF (CURRENT_DATETIME, DATETIME(TIMESTAMP('2020-07-01 10:00:00')), MINUTE);
+
+-----------------------------------------------------------------------------
+
+-- EXTRACT: função para extrair elementos de uma data (elementos dentro do tempo)
+
+SELECT DATA,
+  EXTRACT(MONTH FROM DATA) AS MES,
+  EXTRACT(DAY FROM DATA) AS DIA,
+  EXTRACT(YEAR FROM DATA) AS ANO,
+  EXTRACT(DAYOFWEEK FROM DATA) AS SEMANA
+FROM UNNEST (GENERATE_DATE_ARRAY('2015-12-23', '2016-01-09')) AS DATA
+ORDER BY DATA;
+
+-- TRUNC: função que diminui o valor na menor representação especificada
+
+SELECT 
+  DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), 
+  DATETIME_TRUNC(DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), DAY), 
+  DATETIME_TRUNC(DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), MINUTE), 
+  DATETIME_TRUNC(DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), MONTH), 
+  DATETIME_TRUNC(DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), YEAR);
+
+-- LAST_DAY: função que retorna o último dia do período sendo utilizado para DATE e DATETIME
+
+SELECT 
+  DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), 
+  LAST_DAY(DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), MONTH),
+  LAST_DAY(DATETIME_ADD(CURRENT_DATETIME, INTERVAL 90 DAY), YEAR);
+
+-----------------------------------------------------------------------------
+
+-- FORMAT
+-- FORMAT_TIME, FORMAT_DATETIME, FORMAT_DATE e FORMAT_TIMESTAMP
+-- <FUNÇÃO> (<FORMATO>, VALOR)
+
+SELECT CURRENT_DATETIME, FORMAT_DATETIME ('%A, Dia %d de %B de %Y', CURRENT_DATETIME);
+
+-----------------------------------------------------------------------------
+
+-- DATA UNIX - número de segundos desde o dia 01-01-1970
+
+SELECT CURRENT_TIMESTAMP, UNIX_SECONDS(CURRENT_TIMESTAMP);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
